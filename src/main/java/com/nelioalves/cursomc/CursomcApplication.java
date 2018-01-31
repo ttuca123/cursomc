@@ -121,7 +121,7 @@ public class CursomcApplication implements CommandLineRunner{
 				sdf.parse("28/02/2018 11:35"));
 		ped2.setPagamento(pagamento2);
 		
-		cliente1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		
 		
 		ItemPedido itemPedido1 = new ItemPedido(ped1, p1, 0.0, 1, 2000.0);
 		
@@ -133,6 +133,7 @@ public class CursomcApplication implements CommandLineRunner{
 		
 		ped2.getItens().addAll(Arrays.asList(itemPedido3));		
 		
+		cliente1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		
 		categoriaRepository.save(Arrays.asList(c1, c2));
 		
