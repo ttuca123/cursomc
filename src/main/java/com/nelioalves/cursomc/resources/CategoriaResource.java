@@ -1,14 +1,15 @@
 package com.nelioalves.cursomc.resources;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.nelioalves.cursomc.domain.Categoria;
 import com.nelioalves.cursomc.services.CategoriaService;
@@ -21,19 +22,23 @@ public class CategoriaResource {
 	private CategoriaService categoriaService; 
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
-		
-//		Categoria categoria1 = new Categoria(1, "Informática");
-//		
-//		Categoria categoria2 = new Categoria(2, "Escritório");
-//		
-//		List<Categoria> categorias = new ArrayList<Categoria>();
-//		categorias.add(categoria1);
-//		categorias.add(categoria2);
-		
+	public ResponseEntity<?> find(@PathVariable Integer id) {		
+
 		Categoria categoria = categoriaService.buscar(id);
 		
 		return ResponseEntity.ok(categoria);
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody Categoria cat){
+		
+		cat = categoriaService.insert(cat);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(cat.getId()).toUri();
+		
+		return ResponseEntity.created(uri).build();
 	}
 
 }
