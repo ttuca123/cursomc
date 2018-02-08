@@ -21,7 +21,7 @@ public class ClienteResource {
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 
 		
-		Cliente cliente = clienteService.buscar(id);
+		Cliente cliente = clienteService.find(id);
 		
 		return ResponseEntity.ok(cliente);
 	}
