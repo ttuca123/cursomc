@@ -3,6 +3,7 @@ package com.nelioalves.cursomc.resources;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.nelioalves.cursomc.domain.Categoria;
 import com.nelioalves.cursomc.services.CategoriaService;
+import com.nelioalves.cursomc.services.exceptions.DataIntegrityException;
 
 @RestController
 @RequestMapping(value="/categorias")
@@ -48,6 +50,22 @@ public class CategoriaResource {
 		
 		cat.setId(id);
 		cat = categoriaService.update(cat);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Categoria> delete(@PathVariable Integer id) {		
+
+		find(id);
+		
+		try {
+			categoriaService.delete(id);
+			
+		} catch (DataIntegrityViolationException e) {
+			
+			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos"); 
+		}	
 		
 		return ResponseEntity.noContent().build();
 	}
