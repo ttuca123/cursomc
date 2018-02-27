@@ -67,8 +67,11 @@ public class CursomcApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... arg0) throws Exception {
+		
 		Produto p1 = new Produto(null, "Computador", 2000.0);
+		
 		Produto p2 = new Produto(null, "Impressora", 800.0);
+		
 		Produto p3 = new Produto(null, "Mouse", 50.0);		
 		
 		
