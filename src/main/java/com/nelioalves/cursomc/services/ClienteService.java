@@ -3,6 +3,7 @@ package com.nelioalves.cursomc.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -17,6 +18,7 @@ import com.nelioalves.cursomc.dto.ClienteNewDTO;
 import com.nelioalves.cursomc.repositories.CidadeRepository;
 import com.nelioalves.cursomc.repositories.ClienteRepository;
 import com.nelioalves.cursomc.repositories.EnderecoRepository;
+import com.nelioalves.cursomc.services.exceptions.DataIntegrityException;
 import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -54,22 +56,26 @@ public class ClienteService {
 		
 	}
 	
-	public Cliente update(Cliente cat) {
+	public Cliente update(Cliente obj) {
 		
-		find(cat.getId());
+		Cliente cliente = find(obj.getId());
+					
+		repo.save(cliente);			
 		
-		return repo.save(cat);
+		return repo.save(obj);
 	}
 	
 	public void delete (Integer id) {
 		
 		try {
+			
 			find(id);
 			
 			repo.delete(id);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+		} catch (DataIntegrityViolationException e) {
+			
+			throw new DataIntegrityException("Não é possível excluir porque há pedidos relacionados"); 
 		}
 	}
 	
