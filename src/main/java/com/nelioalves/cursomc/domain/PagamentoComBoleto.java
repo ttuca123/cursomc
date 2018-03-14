@@ -4,10 +4,13 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+import org.springframework.cloud.cloudfoundry.com.fasterxml.jackson.annotation.JsonTypeName;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nelioalves.cursomc.domain.enums.EstadoPagamento;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento {
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
