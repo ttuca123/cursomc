@@ -23,6 +23,22 @@ import com.nelioalves.cursomc.domain.enums.TipoCliente;
 public class Cliente implements Serializable{	
 	private static final long serialVersionUID = 1L;
 	
+	public Cliente() {
+		
+	}
+	
+	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.cpfOuCnpj = cpfOuCnpj;
+		
+		if(tipo!=null) {
+			this.tipo = tipo.getCodigo();
+		}
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -47,18 +63,7 @@ public class Cliente implements Serializable{
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<Pedido>(); 
 	
-	public Cliente() {
-		
-	}
 	
-	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo.getCodigo();
-	}
 
 	
 
@@ -95,7 +100,15 @@ public class Cliente implements Serializable{
 	}
 
 	public TipoCliente getTipo() {
-		return TipoCliente.toEnum(tipo);
+		
+		TipoCliente tipoCliente=TipoCliente.PESSOAFISICA;
+		
+		if(tipo!=null) {
+			
+			tipoCliente =	TipoCliente.toEnum(tipo);
+		}
+		
+		return tipoCliente;
 	}
 
 	public void setTipo(TipoCliente tipo) {
