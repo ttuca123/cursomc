@@ -19,6 +19,7 @@ import com.nelioalves.cursomc.domain.PagamentoComCartao;
 import com.nelioalves.cursomc.domain.Pedido;
 import com.nelioalves.cursomc.domain.Produto;
 import com.nelioalves.cursomc.domain.enums.EstadoPagamento;
+import com.nelioalves.cursomc.domain.enums.Perfil;
 import com.nelioalves.cursomc.domain.enums.TipoCliente;
 import com.nelioalves.cursomc.repositories.CategoriaRepository;
 import com.nelioalves.cursomc.repositories.CidadeRepository;
@@ -138,17 +139,30 @@ public class DBService {
 
 		est2.getCidades().addAll(Arrays.asList(cid2, cid3));
 
-		Cliente cliente1 = new Cliente(null, "Artur Cavalcante", "artur.ti.solution@gmail.com", "981291464",
-				TipoCliente.PESSOAFISICA);
+		Cliente cliente1 = new Cliente(null, "Artur Cavalcante", "artur.ti.solution@gmail.com", "245969345368",
+				TipoCliente.PESSOAFISICA, null);
 
 		cliente1.getTelefones().addAll(Arrays.asList("9546546546", "65165465466"));
+		
+		cliente1.addPerfil(Perfil.ADMIN);
+		
+		Cliente cliente2 = new Cliente(null, "Ana Costa", "ana.costa@gmail.com", "245969345368",
+				TipoCliente.PESSOAFISICA, null);
+		
+		cliente2.getTelefones().addAll(Arrays.asList("9546546546", "65165465466"));
 
+		cliente2.addPerfil(Perfil.ADMIN);
+		
 		Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "apto 303", "Jardim", "3981296546", cliente1,
 				cid2);
 
 		Endereco endereco2 = new Endereco(null, "Av Uber ", "100", "", "Centro", "3981565", cliente1, cid1);
+		
+		Endereco endereco3 = new Endereco(null, "Av Domingos Olimpio ", "600", "", "Centro", "3981565", cliente2, cid1);
 
 		cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+		
+		cliente2.getEnderecos().addAll(Arrays.asList(endereco3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
@@ -183,9 +197,9 @@ public class DBService {
 
 		cidadeRepository.save(Arrays.asList(cid1, cid2, cid3));
 
-		clienteRepository.save(Arrays.asList(cliente1));
+		clienteRepository.save(Arrays.asList(cliente1, cliente2));
 
-		enderecoRepository.save(Arrays.asList(endereco1, endereco2));
+		enderecoRepository.save(Arrays.asList(endereco1, endereco2, endereco3));
 
 		pedidoRepository.save(Arrays.asList(ped1, ped2));
 

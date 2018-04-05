@@ -93,13 +93,13 @@ public class ClienteService {
 	
 	public Cliente fromDTO (ClienteDTO objDTO) {
 		
-		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
 	}
 	
 	public Cliente fromDTO(ClienteNewDTO objDto) {
 		
 		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), 
-				objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+				objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()), objDto.getSenha());
 		
 		Cidade  cid = cidadeRepository.findOne(objDto.getCidadeId());
 		

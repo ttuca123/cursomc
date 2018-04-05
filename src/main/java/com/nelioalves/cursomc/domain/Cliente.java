@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nelioalves.cursomc.domain.enums.Perfil;
 import com.nelioalves.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -24,19 +26,21 @@ public class Cliente implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	public Cliente() {
-		
+		addPerfil(Perfil.CLIENTE);
 	}
 	
-	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
+		this.senha = senha;
 		
 		if(tipo!=null) {
 			this.tipo = tipo.getCodigo();
 		}
+		addPerfil(Perfil.CLIENTE);
 	}
 	
 	@Id
@@ -50,7 +54,8 @@ public class Cliente implements Serializable{
 	private String cpfOuCnpj;
 	private Integer tipo;
 	
-	
+	@JsonIgnore
+	private String senha;
 	
 	@OneToMany(mappedBy="cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<Endereco>();
@@ -58,6 +63,10 @@ public class Cliente implements Serializable{
 	@ElementCollection
 	@CollectionTable(name="telefone")
 	private Set<String> telefones = new HashSet<>();
+	
+	@ElementCollection
+	@CollectionTable(name="perfis")
+	private Set<Integer> perfis = new HashSet<>();
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
@@ -130,7 +139,37 @@ public class Cliente implements Serializable{
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
 	}
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
 
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
+	public Set<Perfil> getPerfis(){
+		
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	
+	public void addPerfil(Perfil perfil) {
+		
+		perfis.add(perfil.getCodigo());
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -156,17 +195,7 @@ public class Cliente implements Serializable{
 		return true;
 	}
 
-	public List<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(List<Pedido> pedidos) {
-		this.pedidos = pedidos;
-	}
-
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
-	}
+	
 	
 	
 	
