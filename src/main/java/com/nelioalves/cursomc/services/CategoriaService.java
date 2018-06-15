@@ -1,6 +1,7 @@
 package com.nelioalves.cursomc.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,14 +23,14 @@ public class CategoriaService {
 	public Categoria find(Integer id) {
 		
 		
-		Categoria categoria = repo.findOne(id);
+		Optional<Categoria> categoria = repo.findById(id);
 		
 		if(categoria == null) {
 			
 			throw new ObjectNotFoundException("Objeto não encontrado");
 		}
 		
-		return categoria;
+		return categoria.get();
 	}
 	
 	
@@ -52,7 +53,7 @@ public class CategoriaService {
 			
 			find(id);
 			
-			repo.delete(id);
+			repo.deleteById(id);
 		}
 		
 		public List<Categoria> findAll() {		

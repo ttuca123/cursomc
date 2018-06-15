@@ -1,6 +1,7 @@
 package com.nelioalves.cursomc.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,14 +27,14 @@ public class ProdutoService {
 	public Produto find(Integer id) {
 		
 		
-		Produto produto = repo.findOne(id);
+		Optional<Produto> produto = repo.findById(id);
 		
 		if(produto == null) {
 			
 			throw new ObjectNotFoundException("Objeto não encontrado");
 		}
 		
-		return produto;
+		return produto.get();
 	}
 	
 	public Page <Produto> searsh (String nome, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy,
@@ -41,7 +42,7 @@ public class ProdutoService {
 		
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		
-		List<Categoria> categorias = categoriaRepository.findAll(ids);
+		List<Categoria> categorias = categoriaRepository.findAllById(ids);
 		
 		return repo.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);
 	}

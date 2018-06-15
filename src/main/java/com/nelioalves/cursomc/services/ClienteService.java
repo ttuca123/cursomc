@@ -1,6 +1,7 @@
 package com.nelioalves.cursomc.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,22 +37,23 @@ public class ClienteService {
 	public Cliente find(Integer id) {
 		
 		
-		Cliente cliente = repo.findOne(id);
+		Optional<Cliente> cliente = repo.findById(id);
 		
 		if(cliente == null) {
 			
 			throw new ObjectNotFoundException("Objeto não encontrado");
 		}
 		
-		return cliente;
+		return cliente.get();
 	}
 	
 	public Cliente insert(Cliente obj) {
 		
 		obj.setId(null);
 		obj = repo.save(obj);
-		enderecoRepository.save(obj.getEnderecos());
 		
+		enderecoRepository.saveAll(obj.getEnderecos());	
+				
 		return obj;
 		
 	}
@@ -71,7 +73,7 @@ public class ClienteService {
 			
 			find(id);
 			
-			repo.delete(id);
+			repo.deleteById(id);
 			
 		} catch (DataIntegrityViolationException e) {
 			
@@ -101,10 +103,10 @@ public class ClienteService {
 		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), 
 				objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()), objDto.getSenha());
 		
-		Cidade  cid = cidadeRepository.findOne(objDto.getCidadeId());
+		Optional<Cidade>  cid = cidadeRepository.findById(objDto.getCidadeId());
 		
 		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(),
-				objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
+				objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid.get());
 		
 		cli.getEnderecos().add(end);
 		

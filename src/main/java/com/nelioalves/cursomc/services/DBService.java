@@ -189,23 +189,23 @@ public class DBService {
 
 		cliente1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 
-		categoriaRepository.save(Arrays.asList(c1, c2, c3, c4, c5, c6, c7));
+		categoriaRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7));
 
-		produtoRepository.save(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 
-		estadoRepository.save(Arrays.asList(est1, est2));
+		estadoRepository.saveAll(Arrays.asList(est1, est2));
 
-		cidadeRepository.save(Arrays.asList(cid1, cid2, cid3));
+		cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
 
-		clienteRepository.save(Arrays.asList(cliente1, cliente2));
+		clienteRepository.saveAll(Arrays.asList(cliente1, cliente2));
 
-		enderecoRepository.save(Arrays.asList(endereco1, endereco2, endereco3));
+		enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2, endereco3));
 
-		pedidoRepository.save(Arrays.asList(ped1, ped2));
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 
-		pagamentoRepository.save(Arrays.asList(pagamento1, pagamento2));
+		pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));
 
-		itemPedidoRepository.save(Arrays.asList(itemPedido1, itemPedido2));
+		itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2));
 
 	}
 }

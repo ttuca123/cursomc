@@ -1,6 +1,7 @@
 package com.nelioalves.cursomc.services;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,14 +37,14 @@ public class PedidoService {
 	public Pedido find(Integer id) {
 		
 		
-		Pedido pedido = repo.findOne(id);
+		Optional<Pedido> pedido = repo.findById(id);
 		
 		if(pedido == null) {
 			
 			throw new ObjectNotFoundException("Objeto não encontrado");
 		}
 		
-		return pedido;
+		return pedido.get();
 	}
 	
 	public Pedido insert (Pedido pedido) {
@@ -65,12 +66,12 @@ public class PedidoService {
 		
 		for(ItemPedido ip: pedido.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setPreco(produtoRepository.findOne(ip.getProduto().getId()).getPreco());
+			ip.setPreco(produtoRepository.findById(ip.getProduto().getId()).get().getPreco());
 			ip.setPedido(pedido);
 			
 		}
 		
-		itemPedidoRepository.save(pedido.getItens());
+		itemPedidoRepository.saveAll(pedido.getItens());
 		
 		return pedido;
 	}
